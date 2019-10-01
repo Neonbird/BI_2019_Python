@@ -1,8 +1,8 @@
 def flat_list(array):
-    one_dem_l = []
-    for i in array:
-        if type(i) == int:
-            one_dem_l.append(i)
+    one_dim_list = []
+    for element in array:
+        if type(element) == int:
+            one_dim_list.append(element)
         else:
-            one_dem_l += flat_list(i)
-    return(one_dem_l)
+            one_dim_list += flat_list(element)
+    return one_dim_list
