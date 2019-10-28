@@ -13,3 +13,4 @@ print(group_equal([1, 1, 4, 4, 4, "hello", "hello", 4]) == [[1,1],[4,4,4],["hell
 print(group_equal([1, 2, 3, 4]) == [[1], [2], [3], [4]])
 print(group_equal([1]) == [[1]])
 print(group_equal([]) == [])
+

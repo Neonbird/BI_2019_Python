@@ -12,3 +12,4 @@ def create_intervals(data):
     return intervals
 
 print(create_intervals({1, 2, 3, 6, 7, 8, 4, 5}) == [(1, 8)])
+
