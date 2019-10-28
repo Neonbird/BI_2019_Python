@@ -11,5 +11,5 @@ def create_intervals(data):
     intervals = [tuple(interval) for interval in intervals]
     return intervals
 
-print(create_intervals({1, 2, 3, 6, 7, 8, 4, 5}) == [(1, 8)])
 
+print(create_intervals({1, 2, 3, 6, 7, 8, 4, 5}) == [(1, 8)])
