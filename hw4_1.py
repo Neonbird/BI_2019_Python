@@ -5,8 +5,9 @@ def find_common_words(first, second):
     for word in second:
         try:
             common_words[word] += 1
-        except: pass
-    answer = sorted(word for word in common_words if common_words[word] > 1 )
+        except:
+            pass
+    answer = sorted(word for word in common_words if common_words[word] > 1)
     return ','.join(answer)
 
 
