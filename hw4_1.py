@@ -1,8 +1,13 @@
 def find_common_words(first, second):
     first = first.split(',')
     second = second.split(',')
-    common_words = sorted([word for word in first if first.count(word) > 0 and second.count(word) > 0])
-    return ','.join(common_words)
+    common_words = dict((word, 1) for word in first)
+    for word in second:
+        try:
+            common_words[word] += 1
+        except: pass
+    answer = sorted(word for word in common_words if common_words[word] > 1 )
+    return ','.join(answer)
 
 
 print(find_common_words("hello,world", "hello,earth") == "hello")
