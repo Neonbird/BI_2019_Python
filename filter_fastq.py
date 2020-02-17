@@ -1,7 +1,9 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
+
 import argparse
+
 
 # count gc content of sequence
 def gc_content(seq: str):
@@ -42,7 +44,7 @@ if args.keep_filtered:
         pass
 
 # create file for passed reads; 
-#if file with this name exits contents of the file are deleted
+# if file with this name exits contents of the file are deleted
 with open(passed_filename, "w") as file_passed:
     pass
 
@@ -56,7 +58,6 @@ with open(file=args.fastq) as file:
                 temp_lines.append(file.readline())
             # determine line with sequence
             seq = temp_lines[1]
-
             # check for length of read
             if len(seq) < args.min_length:
                 # if lenght of read doesn't match 
@@ -69,7 +70,6 @@ with open(file=args.fastq) as file:
                         file_failed.write('\n')
                 # and come to next 4 lines
                 continue
-
             # if it is necessary check for gc content of sequence
             elif args.gc_bounds:
                 if gc_content(seq) > max_gc or gc_content(seq) < min_gc:
@@ -83,7 +83,6 @@ with open(file=args.fastq) as file:
                             file_failed.write('\n')
                     # and come to next 4 lines
                     continue
-
             # if all the requirements for the read are met, 
             # write all 4 lines to a file with passed reads
             with open(passed_filename, "a") as file_passed:
