@@ -35,18 +35,21 @@ if args.gc_bounds:
         min_gc = args.gc_bounds[0]
         max_gc = args.gc_bounds[1]
 
-# create file for failed reads if it is necessary; if file with this name exits contents of the file are deleted
+# create file for failed reads if it is necessary; 
+# if file with this name exits contents of the file are deleted
 if args.keep_filtered:
     with open(failed_filename, "w") as file_failed:
         pass
 
-# create file for passed reads; if file with this name exits contents of the file are deleted
+# create file for passed reads; 
+#if file with this name exits contents of the file are deleted
 with open(passed_filename, "w") as file_passed:
     pass
 
 with open(file=args.fastq) as file:
     for line in file:
-        # find first read-specific line and remember this line and next 3 lines
+        # find first read-specific line 
+        # and remember this line and next 3 lines
         if line.startswith('@'):
             temp_lines = [line]
             for i in range(3):
@@ -56,7 +59,9 @@ with open(file=args.fastq) as file:
 
             # check for length of read
             if len(seq) < args.min_length:
-                # if lenght of read doesn't match write all 4 lines in file with failed reads if it is necessary
+                # if lenght of read doesn't match 
+                # write all 4 lines in file with failed reads 
+                # if it is necessary
                 if args.keep_filtered:
                     with open(failed_filename, "a") as file_failed:
                         for temp_line in temp_lines:
@@ -68,7 +73,9 @@ with open(file=args.fastq) as file:
             # if it is necessary check for gc content of sequence
             elif args.gc_bounds:
                 if gc_content(seq) > max_gc or gc_content(seq) < min_gc:
-                    # if gc content of read doesn't match write all 4 lines in file with failed reads if it is necessary
+                    # if gc content of read doesn't match 
+                    # write all 4 lines in file with failed reads 
+                    # if it is necessary
                     if args.keep_filtered:
                         with open(failed_filename, "a") as file_failed:
                             for temp_line in temp_lines:
@@ -77,7 +84,8 @@ with open(file=args.fastq) as file:
                     # and come to next 4 lines
                     continue
 
-            # if all the requirements for the read are met, write all 4 lines to a file with passed reads
+            # if all the requirements for the read are met, 
+            # write all 4 lines to a file with passed reads
             with open(passed_filename, "a") as file_passed:
                 for temp_line in temp_lines:
                     file_passed.write(temp_line)
