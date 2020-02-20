@@ -1,30 +1,32 @@
 class Nucleotide_seq():
     def __init__(self, sequence):
         self.seq = sequence
-        self.counter = -1
-
+        self.counter = 0
 
     def __iter__(self):
         return self
 
-
     def __next__(self):
-        self.counter += 1
         if self.counter < len(self.seq):
-            return self.seq[self.counter]
+            curr_el = self.seq[self.counter]
+            self.counter += 1
+            return curr_el
         else:
             raise StopIteration
-
 
     def __eq__(self, other_seq):
         if isinstance(other_seq, Nucleotide_seq):
             return self.seq == other_seq.seq
         return NotImplemented
 
-
     def __hash__(self):
         return(hash(self.seq))
 
+    def __str__(self):
+        return self.seq
+
+    def __repr__(self):
+        return self.seq
 
     def gc_content(self):
         gc_count = self.seq.count('G') + self.seq.count('C')
@@ -46,7 +48,6 @@ class Dna(Nucleotide_seq):
         return reverse_seq[::-1]
 
 
-
 class Rna(Nucleotide_seq):
     def reverse_complement(self):
         reverse_seq = ""
@@ -66,7 +67,7 @@ a = Dna('AATA')
 b = Rna('ACCA')
 c = Rna('ACCA')
 
-print(set([a,b,c]))
+# print(set([a,b,c]))
 # for i in b:
 #    print(i)
 # print(a == b)
