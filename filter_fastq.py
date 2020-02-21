@@ -52,10 +52,8 @@ with open(file=args.fastq) as file:
     for line in file:
         # find first read-specific line 
         # and remember this line and next 3 lines
-        if line.startswith('@'):
-            temp_lines = [line]
-            for i in range(3):
-                temp_lines.append(file.readline())
+        if line != '\n':
+            temp_lines = [line, next(file), next(file), next(file)]
             # determine line with sequence
             seq = temp_lines[1]
             # check for length of read
@@ -84,7 +82,7 @@ with open(file=args.fastq) as file:
                     # and come to next 4 lines
                     continue
             # if all the requirements for the read are met, 
-            # write all 4 lines to a file with passed reads
+            # write all 4 lines from temp to a file with passed reads
             with open(passed_filename, "a") as file_passed:
                 for temp_line in temp_lines:
                     file_passed.write(temp_line)
