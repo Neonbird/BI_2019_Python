@@ -1,4 +1,4 @@
-class Nucleotide_seq():
+class NucleotideSeq:
     def __init__(self, sequence):
         self.seq = sequence
         self.counter = 0
@@ -15,12 +15,12 @@ class Nucleotide_seq():
             raise StopIteration
 
     def __eq__(self, other_seq):
-        if isinstance(other_seq, Nucleotide_seq):
+        if isinstance(other_seq, NucleotideSeq):
             return self.seq == other_seq.seq
         return NotImplemented
 
     def __hash__(self):
-        return(hash(self.seq))
+        return hash(self.seq)
 
     def __str__(self):
         return self.seq
@@ -33,43 +33,19 @@ class Nucleotide_seq():
         return str(gc_count*100/len(self.seq))+'%'
 
 
-class Dna(Nucleotide_seq):
+class Rna(NucleotideSeq):
     def reverse_complement(self):
+        reverse_dict = {'A': 'U', 'U': 'A', 'C': 'G', 'G': 'C'}
         reverse_seq = ""
         for nucl in self.seq:
-            if nucl == 'A':
-                reverse_seq += 'T'
-            elif nucl == "T":
-                reverse_seq += "A"
-            elif nucl == 'C':
-                reverse_seq += 'G'
-            else:
-                reverse_seq += 'C'
+            reverse_seq += reverse_dict[nucl]
         return reverse_seq[::-1]
 
 
-class Rna(Nucleotide_seq):
+class Dna(NucleotideSeq):
     def reverse_complement(self):
+        reverse_dict = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}
         reverse_seq = ""
         for nucl in self.seq:
-            if nucl == 'A':
-                reverse_seq += 'U'
-            elif nucl == "U":
-                reverse_seq += "A"
-            elif nucl == 'C':
-                reverse_seq += 'G'
-            else:
-                reverse_seq += 'C'
+            reverse_seq += reverse_dict[nucl]
         return reverse_seq[::-1]
-
-
-a = Dna('AATA')
-b = Rna('ACCA')
-c = Rna('ACCA')
-
-# print(set([a,b,c]))
-# for i in b:
-#    print(i)
-# print(a == b)
-# print(a.gc_content())
-# print(b.reverse_complement())
