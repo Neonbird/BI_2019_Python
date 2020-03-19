@@ -3,7 +3,6 @@
 
 
 import argparse
-from sys import argv
 
 
 # count gc content of sequence
