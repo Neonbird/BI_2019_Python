@@ -1,21 +1,18 @@
 import unittest
 import filter_fastq_modified as filtering
-from os import path
+from os import path, remove
 
 
 class TestFilterFastqc(unittest.TestCase):
-    def setUp(self) -> None:
-        pass
-
     def test_gc_content(self):
         self.assertEqual(50, filtering.gc_content("GCGAAT"))
         self.assertEqual(0, filtering.gc_content("TAAAT"))
         self.assertEqual(100, filtering.gc_content("GCGGGC"))
 
     def test_output_base_name_arg_true(self):
-        self.args_fastq = "defolt_name.fastq"
-        self.args_output_base_name = 'good'
-        result = filtering.make_output_filenames(self.args_output_base_name, self.args_fastq)
+        args_fastq = "defolt_name.fastq"
+        args_output_base_name = 'good'
+        result = filtering.make_output_filenames(args_output_base_name, args_fastq)
         self.assertEqual(result, ('good__passed.fastq', 'good__failed.fastq'))
 
     def test_output_base_name_arg_false(self):
@@ -52,6 +49,11 @@ class TestFilterFastqc(unittest.TestCase):
         passed_filename = 'filename__passed.fastq'
         filtering.create_passed_file(passed_filename)
         self.assertEqual(path.exists(passed_filename), True)
+
+    def tearDown(self):
+        remove("i_shouldnt_exist__failed.fastq")
+        remove("i_should_exist__failed.fastq")
+        remove('filename__passed.fastq')
 
 
 if __name__ == '__main__':
