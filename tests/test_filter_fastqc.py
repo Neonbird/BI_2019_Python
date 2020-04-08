@@ -15,13 +15,13 @@ class TestFilterFastqc(unittest.TestCase):
     def test_output_base_name_arg_true(self):
         self.args_fastq = "defolt_name.fastq"
         self.args_output_base_name = 'good'
-        result = filtering.check_output_base_name(self.args_output_base_name, self.args_fastq)
+        result = filtering.make_output_filenames(self.args_output_base_name, self.args_fastq)
         self.assertEqual(result, ('good__passed.fastq', 'good__failed.fastq'))
 
     def test_output_base_name_arg_false(self):
         self.args_fastq = "defolt_name.fastq"
         self.args_output_base_name = None
-        result = filtering.check_output_base_name(None, self.args_fastq)
+        result = filtering.make_output_filenames(None, self.args_fastq)
         self.assertEqual(result, ('defolt_name__passed.fastq', 'defolt_name__failed.fastq'))
 
     def test_create_gc_bounds_no_bounds(self):

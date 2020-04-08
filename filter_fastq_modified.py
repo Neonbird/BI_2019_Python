@@ -3,6 +3,7 @@
 
 
 import argparse
+import os
 
 
 # count gc content of sequence
@@ -12,8 +13,7 @@ def gc_content(seq: str):
 
 
 # Create names for files with passed sequences and failed
-def check_output_base_name(args_output_base_name, args_fastq):
-    # if True
+def make_output_filenames(args_output_base_name, args_fastq):
     if args_output_base_name:
         passed_filename = args_output_base_name + '__passed.fastq'
         failed_filename = args_output_base_name + '__failed.fastq'
@@ -39,10 +39,10 @@ def create_gc_bounds(args_gc_bounds):
 
 # create file for failed reads if it is necessary;
 # if file with this name exits contents of the file are deleted
-def create_failed_file(args_keep_filtered, failed_filename):
-    if args_keep_filtered:
-        with open(failed_filename, "w") as _:
-            pass
+
+
+
+
 
 
 # create file for passed reads;
@@ -64,10 +64,11 @@ def parse_args():
 
 if __name__ == '__main__':
     args = parse_args()
-    passed_filename, failed_filename = check_output_base_name(args.output_base_name, args.fastq)
+    passed_filename, failed_filename = make_output_filenames(args.output_base_name, args.fastq)
     min_gc, max_gc = create_gc_bounds(args.gc_bounds)
-    create_failed_file(args.keep_filtered, failed_filename)
     create_passed_file(passed_filename)
+    if args.keep_filtered:
+        open(os.path.expanduser('~') + failed_filename, 'w')
 
     with open(file=args.fastq) as file:
         for line in file:
@@ -78,7 +79,7 @@ if __name__ == '__main__':
                 # determine line with sequence
                 seq = temp_lines[1]
                 # check for length of read
-                if len(seq) < args.min_length:
+                if (len(seq) - 1) < args.min_length:
                     # if lenght of read doesn't match
                     # write all 4 lines in file with failed reads
                     # if it is necessary
