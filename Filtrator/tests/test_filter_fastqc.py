@@ -1,9 +1,15 @@
 import unittest
-import filter_fastq_modified as filtering
+import Filtrator.filter_fastq_modified as filtering
 from os import path, remove
 
 
 class TestFilterFastqc(unittest.TestCase):
+    def silent_remove(self, filename):
+        try:
+            self.addCleanup(remove, filename)
+        except FileNotFoundError:
+            pass
+
     def test_gc_content(self):
         self.assertEqual(50, filtering.gc_content("GCGAAT"))
         self.assertEqual(0, filtering.gc_content("TAAAT"))
@@ -16,9 +22,9 @@ class TestFilterFastqc(unittest.TestCase):
         self.assertEqual(result, ('good__passed.fastq', 'good__failed.fastq'))
 
     def test_output_base_name_arg_false(self):
-        self.args_fastq = "defolt_name.fastq"
+        args_fastq = "defolt_name.fastq"
         self.args_output_base_name = None
-        result = filtering.make_output_filenames(None, self.args_fastq)
+        result = filtering.make_output_filenames(None, args_fastq)
         self.assertEqual(result, ('defolt_name__passed.fastq', 'defolt_name__failed.fastq'))
 
     def test_create_gc_bounds_no_bounds(self):
@@ -35,25 +41,23 @@ class TestFilterFastqc(unittest.TestCase):
 
     def test_dont_create_failed_file(self):
         args_keep_filtered = None
-        failed_filename = "i_shouldnt_exist__failed.fastq"
-        filtering.create_failed_file(args_keep_filtered, failed_filename)
-        self.assertEqual(path.exists(failed_filename), False)
+        failed_filename = "i_should_exist__failed.fastq"
+        filtering.create_file(failed_filename, args_keep_filtered)
+        self.assertFalse(path.exists(failed_filename))
+        self.silent_remove(failed_filename)
 
     def test_create_failed_file(self):
         args_keep_filtered = True
         failed_filename = "i_should_exist__failed.fastq"
-        filtering.create_failed_file(args_keep_filtered, failed_filename)
-        self.assertEqual(path.exists(failed_filename), True)
+        filtering.create_file(failed_filename, args_keep_filtered)
+        self.assertTrue(path.exists(failed_filename))
+        self.silent_remove(failed_filename)
 
     def test_create_passed_file(self):
         passed_filename = 'filename__passed.fastq'
-        filtering.create_passed_file(passed_filename)
-        self.assertEqual(path.exists(passed_filename), True)
-
-    def tearDown(self):
-        remove("i_shouldnt_exist__failed.fastq")
-        remove("i_should_exist__failed.fastq")
-        remove('filename__passed.fastq')
+        filtering.create_file(passed_filename, True)
+        self.assertTrue(path.exists(passed_filename))
+        self.silent_remove(passed_filename)
 
 
 if __name__ == '__main__':
