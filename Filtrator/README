@@ -1,0 +1,21 @@
+Welcome to Filtrator for fastq file!
+It is simple script to filter reads from your fastq files by several parameters:
+* minimal length
+* GC content
+and save passed and unpassed reads (if you need it) to separated files.
+
+
+To run filtrator execute filter_fastq_modified.py from command line with nesessary arguments:
+'python3 filter_fastq_modified.py <arguments> <fastq_file>'
+
+Arguments:
+'--min_length' <int> - specify the min len of reads;
+'--keep_filtered' - use it if you want to write unpassed reads to file;
+'--gc_bounds' <min GC-content> [optional]<max GC-content> - specify min GC-content of reads or the interval from min to max GC content
+'--output_base_name' <name> - set the name for output file(s); the filename(s) will be like '<name>__passed.fastq' (and '<name>__failed.fastq').
+
+
+P.S. Sorry for my english!
+
+
+

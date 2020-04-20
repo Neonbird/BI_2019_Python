@@ -38,10 +38,9 @@ def create_gc_bounds(args_gc_bounds):
 
 # create file;
 # if file with this name exits contents of the file are deleted
-def create_file(filename, create):
-    if create:
-        with open(filename, "w") as _:
-            pass
+def create_file(filename):
+    with open(filename, "w") as _:
+        pass
 
 
 def parse_args():
@@ -58,8 +57,9 @@ if __name__ == '__main__':
     args = parse_args()
     passed_filename, failed_filename = make_output_filenames(args.output_base_name, args.fastq)
     min_gc, max_gc = create_gc_bounds(args.gc_bounds)
-    create_file(passed_filename, True)
-    create_file(failed_filename, args.keep_filtered)
+    create_file(passed_filename)
+    if args.keep_filtered:
+        create_file(failed_filename)
     with open(args.fastq) as file:
         for line in file:
             # take info about one read

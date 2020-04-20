@@ -39,25 +39,11 @@ class TestFilterFastqc(unittest.TestCase):
         args_gc_bounds = [30, 50]
         self.assertEqual((30, 50), filtering.create_gc_bounds(args_gc_bounds))
 
-    def test_dont_create_failed_file(self):
-        args_keep_filtered = None
-        failed_filename = "i_should_exist__failed.fastq"
-        filtering.create_file(failed_filename, args_keep_filtered)
-        self.assertFalse(path.exists(failed_filename))
-        self.silent_remove(failed_filename)
-
-    def test_create_failed_file(self):
-        args_keep_filtered = True
-        failed_filename = "i_should_exist__failed.fastq"
-        filtering.create_file(failed_filename, args_keep_filtered)
-        self.assertTrue(path.exists(failed_filename))
-        self.silent_remove(failed_filename)
-
-    def test_create_passed_file(self):
-        passed_filename = 'filename__passed.fastq'
-        filtering.create_file(passed_filename, True)
-        self.assertTrue(path.exists(passed_filename))
-        self.silent_remove(passed_filename)
+    def test_create_output_file(self):
+        filename = "i_should_exist.fastq"
+        filtering.create_file(filename)
+        self.assertTrue(path.exists(filename))
+        self.silent_remove(filename)
 
 
 if __name__ == '__main__':
